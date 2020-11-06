@@ -6,6 +6,7 @@ from application.forms import TodoForm
 @app.route('/')
 def index():
     all_todo = Todo.query.all()
+    
     return render_template('index.html', all_todo=all_todo)
 
 @app.route('/add', methods=['GET', 'POST'])
