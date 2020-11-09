@@ -1,13 +1,30 @@
 from flask import render_template, redirect, url_for, request
 from application import app, db
 from application.models import Todo
-from application.forms import TodoForm
+from application.forms import TodoForm, OrderForm
 
-@app.route('/')
+@app.route('/', methods=['GET','POST'])
 def index():
-    all_todo = Todo.query.all()
+    form = OrderForm()
+    totals = {
+            'number_completed':Todo.query.filter_by(completed=True).count(),
+            'total':Todo.query.count()
+            }
+
+
+    form = OrderForm()
+    if form.order.data == 'new':
+        all_todo = Todo.query.order_by(Todo.id.desc()).all()
+    elif form.order.data == 'old':
+        all_todo = Todo.query.order_by(Todo.id).all()
+    elif form.order.data== 'completed':
+        all_todo = Todo.query.order_by(Todo.completed.desc()).all()
+    elif form.order.data == 'incompleted':
+        all_todo = Todo.query.order_by(Todo.completed).all()
+    else:
+        all_todo = Todo.query.all()
     
-    return render_template('index.html', all_todo=all_todo)
+    return render_template('index.html', all_todo=all_todo, form=form)
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():

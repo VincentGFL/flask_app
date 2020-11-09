@@ -1,6 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.ext.sqlalchemy.fields import QuerySelectField
+from wtforms import StringField, SubmitField, SelectField
 from wtforms.validators import DataRequired, ValidationError
 from application.models import Todo
 
@@ -15,8 +14,12 @@ class TodoCheck:
             if todo.name == field.data:
                 raise ValidationError(self.message)
 
-class Sort(FlaskForm):
-    sort = QuerySelectField("Completed first", Todo.query.order_by(Todo.completed).all())
+class OrderForm(FlaskForm):
+    order = SelectField("Completed first", choices=[
+        ('new','Most Recent'),
+        ('old','Oldests'),
+        ('completed','Complated'),
+        ('incompleted','Incompleted')])
 
 class TodoForm(FlaskForm):
     task = StringField('Task', validators=[DataRequired(), 
