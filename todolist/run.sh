@@ -1,4 +1,4 @@
 #!/bin/bash
-pip3 install requirements.txt
-python3 create.py
-python3 app.py
+pip3 todolist/install requirements.txt
+python3 todolist/create.py
+python3 todolist/app.py
