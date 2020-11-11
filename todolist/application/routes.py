@@ -7,8 +7,8 @@ from application.forms import TodoForm, OrderForm
 def index():
     form = OrderForm()
     totals = {
-            'number_completed':Todo.query.filter_by(completed=True).count(),
-            'total':Todo.query.count()
+            'total':Todo.query.count(),
+            'number_completed':Todo.query.filter_by(completed=True).count()
             }
 
 
@@ -24,7 +24,7 @@ def index():
     else:
         all_todo = Todo.query.all()
     
-    return render_template('index.html', all_todo=all_todo, form=form)
+    return render_template('index.html', all_todo=all_todo, form=form, totals=totals )
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
